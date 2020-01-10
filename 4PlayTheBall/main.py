@@ -9,7 +9,7 @@ import pygame
 from pygame.locals import *
 import sys
 from random import *
-
+import traceback
 
 #球类
 class Ball(pygame.sprite.Sprite):
@@ -62,8 +62,6 @@ class Glass(pygame.sprite.Sprite):
         self.mouse_rect.left, self.mouse_rect.top = self.glass_rect.left, self.glass_rect.top
         pygame.mouse.set_visible(False)
         
-        
-
 def main():
     pygame.init()
     
@@ -131,9 +129,7 @@ def main():
     
     motion = 0
     MYTIMER = USEREVENT + 1
-    pygame.time.set_timer(MYTIMER, 1 * 1000)
-    
-    
+    pygame.time.set_timer(MYTIMER, 1 * 1000)   
     
     #运行起来
     clock = pygame.time.Clock()
@@ -194,10 +190,7 @@ def main():
                                 msg_pos = (width - msg.get_width()) // 2, (height - msg.get_height()) // 2
                                 msgs.append((msg, msg_pos))
                                 laugh_sound.play()
-                                
-                                    
-                    
-        
+  
         #绘制背景
         screen.blit(background, (0, 0))
         #绘制玻璃,指针
@@ -210,9 +203,7 @@ def main():
             glass.mouse_rect.top = glass.glass_rect.top
         if glass.mouse_rect.bottom > glass.glass_rect.bottom:
             glass.mouse_rect.bottom = glass.glass_rect.bottom
-        
-        
-        
+         
         screen.blit(glass.glass_image, glass.glass_rect)
         screen.blit(glass.mouse_image, glass.mouse_rect)
         #绘制小球
@@ -232,23 +223,23 @@ def main():
                 each.speed = [randint(1, 5)*(-each.side[0]), randint(1, 5)*(-each.side[1])]
                 each.control = False
             group.add(each)
-            
-        
-        
+                 
         #打印消息
         for msg in msgs:
             screen.blit(msg[0], msg[1])
         #图像显示到屏幕上
         pygame.display.flip()
         clock.tick(30)
-        
-        
-            
+                 
     pygame.quit()
     sys.exit()
     
-    
-
-
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except SystemExit:
+        pass
+    except:
+        traceback.print_exc()
+        pygame.quit()
+        input()
